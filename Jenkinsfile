@@ -95,7 +95,7 @@ pipeline {
         }
         stage('Approval') {
             steps {
-                timeout(15, 'MINUTES') {
+                timeout(15, unit: 'MINUTES') {
                     input message: 'Ready to deploy to production?', ok: 'Deploy'
                 }
                 
