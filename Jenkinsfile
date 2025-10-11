@@ -112,10 +112,23 @@ pipeline {
             }
             post {
                 always {
-        
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Prod Report', reportTitles: '', useWrapperFileDirectly: true])
+                    // ADDED 'csp' PARAMETER HERE
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        icon: '',
+                        keepAll: false,
+                        reportDir: 'playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Prod Report',
+                        reportTitles: '',
+                        useWrapperFileDirectly: true,
+                        
+                        // 💡 THIS IS THE FIX
+                        csp: 'sandbox allow-scripts allow-same-origin allow-popups' 
+                    ])
                 }
-            }    
+            }
         }
         
     }
