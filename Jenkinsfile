@@ -112,7 +112,6 @@ pipeline {
             }
             post {
                 always {
-                    // ADDED 'csp' PARAMETER HERE
                     publishHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: false,
@@ -122,10 +121,7 @@ pipeline {
                         reportFiles: 'index.html',
                         reportName: 'Prod Report',
                         reportTitles: '',
-                        useWrapperFileDirectly: true,
-                        
-                        // 💡 THIS IS THE FIX
-                        csp: 'sandbox allow-scripts allow-same-origin allow-popups' 
+                        useWrapperFileDirectly: true
                     ])
                 }
             }
