@@ -89,9 +89,44 @@ pipeline {
                     node_modules/.bin/netlify --version
                     echo "Deploying to Netlify site id: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --json > deploy-report.txt
-                    node_modules/.bin/node-jq -r '.deploy_url' deploy-report.txt
+                    node_modules/.bin/netlify deploy --dir=build --json > deploy-report.json
+                    node_modules/.bin/node-jq -r '.deploy_url' deploy-report.json
                 '''
+                script {
+                    env.STAGING_URL = sh(script: "node_modules/.bin/node-jq -r '.deploy_url' deploy-report.json", returnStdout: true).trim()
+                }
+            }
+            
+        }
+        stage('Staging E2E') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+            environment {
+                CI_ENVIRONMENT_URL = "$env.STAGING_URL"
+            }
+            steps {
+                sh '''
+                    npx playwright test --reporter=html
+                '''
+            }
+            post {
+                always {
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        icon: '',
+                        keepAll: false,
+                        reportDir: 'playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Staging E2E Report',
+                        reportTitles: '',
+                        useWrapperFileDirectly: true
+                    ])
+                }
             }
         }
         stage('Approval') {
@@ -144,7 +179,7 @@ pipeline {
                         keepAll: false,
                         reportDir: 'playwright-report',
                         reportFiles: 'index.html',
-                        reportName: 'Prod Report',
+                        reportName: 'Prod E2E Report',
                         reportTitles: '',
                         useWrapperFileDirectly: true
                     ])
