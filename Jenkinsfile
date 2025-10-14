@@ -90,7 +90,7 @@ pipeline {
                 }
             }
             environment {
-                CI_ENVIRONMENT_URL = "Need to be set"
+                CI_ENVIRONMENT_URL = "https://roaring-starlight-6adaf6.netlify.app"
             }
             steps {
                 sh '''
