@@ -93,7 +93,7 @@ pipeline {
                     echo "Deploying to Netlify site id: $NETLIFY_SITE_ID"
                     netlify status
                     netlify deploy --dir=build --json > deploy-report.json
-                    CI_ENVIRONMENT_URL=$(node-jq -r '.deploy_url' deploy-report.json)
+                    CI_ENVIRONMENT_URL=$(jq -r '.deploy_url' deploy-report.json)
                     npx playwright test --reporter=html
                 '''
             }
