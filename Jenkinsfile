@@ -3,12 +3,13 @@ pipeline {
 
     environment {
         APP_VERSION = '1.0.$BUILD_NUMBER'
+        AWS_DEFAULT_REGION = 'us-east-1'
     }
 
     stages {
         
         
-        stage('DePloy to AWS') {
+        stage('Deploy to AWS') {
             agent{
                 docker{
                     image 'amazon/aws-cli'
@@ -27,7 +28,7 @@ pipeline {
                 
             }
         }
-        
+
         stage('Build') {
             agent {
                 docker {
