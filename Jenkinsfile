@@ -23,9 +23,9 @@ pipeline {
                     sh '''
                         aws --version
                         yum install -y jq
-                        LATEST_TASK_REVISISON = $(aws ecs register-task-definition --cli-input-json file://aws/task-defination-prod.json | jq '.taskDefinition.revision')
-                        echo "Latest Task Revision is : $LATEST_TASK_REVISISON"
-                        aws ecs update-service --cluster learnJenkinsApp-Cluster-Prod --service learnJenkinsApp-Service-Prod --task-definition learnJenkinsApp-TaskDefination-Prod:$LATEST_TASK_REVISISON
+                        LATEST_TASK_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-defination-prod.json | jq '.taskDefinition.revision')
+                        echo "Latest Task Revision is : $LATEST_TASK_REVISION"
+                        aws ecs update-service --cluster learnJenkinsApp-Cluster-Prod --service learnJenkinsApp-Service-Prod --task-definition learnJenkinsApp-TaskDefination-Prod:$LATEST_TASK_REVISION
                     '''                    
                 }
                 
