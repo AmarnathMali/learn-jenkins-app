@@ -22,8 +22,10 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'aws-s3', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version
-                        aws ecs register-task-definition --cli-input-json file://aws/task-defination-prod.json
-                        aws ecs update-service --cluster learnJenkinsApp-Cluster-Prod --service learnJenkinsApp-Service-Prod --task-definition learnJenkinsApp-TaskDefination-Prod:2
+                        yum install -y jq
+                        LATEST_TASK_REVISISON = $(aws ecs register-task-definition --cli-input-json file://aws/task-defination-prod.json | jq '.taskDefinition.revision')
+                        echo "Latest Task Revision is : $LATEST_TASK_REVISISON"
+                        aws ecs update-service --cluster learnJenkinsApp-Cluster-Prod --service learnJenkinsApp-Service-Prod --task-definition learnJenkinsApp-TaskDefination-Prod:$LATEST_TASK_REVISISON
                     '''                    
                 }
                 
