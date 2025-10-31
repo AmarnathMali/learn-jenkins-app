@@ -33,7 +33,7 @@ pipeline {
 
         stage("Build-Docker-image") {
             steps {
-                sh 'docker build -t myJenkinsApp .'
+                sh 'docker build -t myjenkinsapp .'
             }
         }
 
