@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        APP_VERSION = '1.0.$BUILD_NUMBER'
+        APP_VERSION = "1.0.$BUILD_ID"
         APP_NAME = 'myjenkinsapp'
         AWS_DEFAULT_REGION = 'us-east-1'
         AWS_ECS_CLUSTER = 'learnJenkinsApp-Cluster-Prod'
