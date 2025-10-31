@@ -44,7 +44,6 @@ pipeline {
                 sh '''
                     yum install -y docker
                     docker version  # sanity check
-                    amazon-linux-extras install docker
                     docker build -t myjenkinsapp .
                 '''
             }
